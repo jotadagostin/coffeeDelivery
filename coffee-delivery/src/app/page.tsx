@@ -1,8 +1,9 @@
-export default function Home() {
+import { HeroSection } from "@/components/home/HeroSection";
+
+export default function HomePage() {
   return (
-    <div>
-      <h1>Hello world!</h1>
-      <p>Time for a new project...</p>
-    </div>
+    <main>
+      <HeroSection />
+    </main>
   );
 }
