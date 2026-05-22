@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Baloo_2, Roboto } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -26,7 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${baloo.variable} ${roboto.variable}`}>{children}</body>
+      <body className={`${baloo.variable} ${roboto.variable}`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
