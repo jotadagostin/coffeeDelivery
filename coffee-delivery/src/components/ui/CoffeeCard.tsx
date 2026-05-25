@@ -54,7 +54,7 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
         <div className="flex items-center gap-2">
           <QuantityInput value={quantity} onChange={setQuantity} />
           <button
-            className="bg-purple-dark hover:bg-purple text-white p-2 rounded-md transition-colors"
+            className="bg-purple-dark hover:bg-purple text-white p-2 rounded-md transition-colors cursor-pointer"
             onClick={handleAddToCart}
           >
             <ShoppingCartSimpleIcon size={22} weight="fill" />

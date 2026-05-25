@@ -4,9 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
 import { MapPinIcon, ShoppingCartIcon } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const totalItems = useCartStore((state) => state.totalItems);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
   return (
     <header className="max-w-290 mx-auto px-8 py-8 flex items-center justify-between">
       <Link href="/">
@@ -31,7 +39,7 @@ export function Header() {
           className="relative bg-yellow-light text-yellow-dark p-2 rounded-md"
         >
           <ShoppingCartIcon size={22} weight="fill" />
-          {totalItems() > 0 && (
+          {mounted && totalItems() > 0 && (
             <span className="absolute -top-2 -right-2 bg-yellow-dark text-white text-tag font-bold w-5 h-5 rounded-full flex items-center justify-center">
               {totalItems()}
             </span>
