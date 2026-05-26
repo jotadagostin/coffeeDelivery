@@ -1,6 +1,7 @@
 "use client";
 
 import { useCartStore } from "@/store/useCartStore";
+import { TrashIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -41,12 +42,73 @@ export function CartSummary() {
                   </span>
                 </div>
 
-                <div className="flex gap-2"></div>
+                <div className="flex gap-2">
+                  {/* Quantity */}
+                  <div className="flex items-center gap-2 bg-base-button rounded-md px-3 py-1">
+                    <button
+                      onClick={() =>
+                        updateQuantity(
+                          item.coffee.id,
+                          Math.max(1, item.quantity - 1),
+                        )
+                      }
+                      className="text-purple hover:text-purple-dark transition-colors cursor-pointer"
+                    >
+                      -
+                    </button>
+                    <span className="text-text-s font-bold w-4 text-center">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.coffee.id, item.quantity + 1)
+                      }
+                      className="text-purple hover:text-purple-dark transition-colors cursor-pointer"
+                    >
+                      {" "}
+                      +
+                    </button>
+                  </div>
+
+                  {/* Remove */}
+                  <button
+                    onClick={() => removeItem(item.coffee.id)}
+                    className="flex items-center gap-1 bg-base-button hover:bg-base-hover  px-3 py-1 rounded-md transition-colors text-tag uppercase text-base-text cursor-pointer"
+                  >
+                    <TrashIcon size={16} className="text-purple" />
+                    Remove
+                  </button>
+                </div>
               </div>
             </div>
+            <div className="border-b border-base-button mt-6"></div>
           </div>
         ))}
       </div>
+
+      {/* Totals */}
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between text-text-s text-base-text">
+          <span>Total items</span>
+          <span>${totalPrice().toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-text-s text-base-text">
+          <span>Delivery</span>
+          <span>${DELIVERY_FREE.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between font-bold text-title-s text-base-subtitle">
+          <span>Total</span>
+          <span>${(totalPrice() + DELIVERY_FREE).toFixed(2)}</span>
+        </div>
+      </div>
+
+      {/* Confirm button */}
+      <button
+        onClick={handleConfirmOrder}
+        className="w-full bg-yellow hover:bg-yellow-dark text-white font-bold text-button-g uppercase py-3 rounded-md transition-colors cursor-pointer"
+      >
+        Confirm order
+      </button>
     </div>
   );
 }
