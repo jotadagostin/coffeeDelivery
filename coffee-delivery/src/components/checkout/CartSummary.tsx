@@ -12,7 +12,7 @@ export function CartSummary() {
   const router = useRouter();
 
   function handleConfirmOrder() {
-    router.push("/sucess");
+    router.push("/success");
   }
   return (
     <div className="bg-base-card rounded-tl-md rounded-tr-3xl rounded-bl-3xl rounded-br-md p-10 flex flex-col gap-6">
