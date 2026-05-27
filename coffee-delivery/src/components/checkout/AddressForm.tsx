@@ -52,6 +52,13 @@ export function AdressForm({ onChange }: AddressFormProps) {
     }
   }, [zip, onChange]);
 
+  const watchedFields = watch();
+
+  useEffect(() => {
+    onChange?.(watchedFields);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(watchedFields)]);
+
   const inputClass = `
     w-full bg-base-input border border-base-button rounded-md px-3 py-3
     text-text-s text-base-text placeholder:text-base-label

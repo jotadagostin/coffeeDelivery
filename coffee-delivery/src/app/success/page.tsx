@@ -1,6 +1,12 @@
 "use client";
 
 import { useCartStore } from "@/store/useCartStore";
+import {
+  CurrencyDollarIcon,
+  MapPinIcon,
+  TimerIcon,
+} from "@phosphor-icons/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -8,13 +14,13 @@ export default function SucessPage() {
   const { order, clearCart } = useCartStore();
   const router = useRouter();
 
-  //   useEffect(() => {
-  //     if (!order) {
-  //       router.replace("/");
-  //     }
-  //   }, [order, router]);
+  useEffect(() => {
+    if (!order) {
+      router.replace("/");
+    }
+  }, [order, router]);
 
-  //   if (!order) return null;
+  if (!order) return null;
 
   const paymentLabels = {
     credit: "Credit Card",
@@ -43,7 +49,61 @@ export default function SucessPage() {
           }}
         >
           {/* Address */}
-          <div className="flex items-start gap-3"></div>
+          <div className="flex items-start gap-3">
+            <span className="bg-purple p-2 rounded-full text-white shrink-0">
+              <MapPinIcon size={16} weight="fill" />
+            </span>
+            <div>
+              <p className="text-text-m text-base-text">
+                Delivery to {""}
+                <strong>
+                  {order.address.street}, {order.address.number}
+                </strong>
+              </p>
+              <p className="text-text-m text-base-text">
+                {order.address.neighborhood} - {order.address.city},{" "}
+                {order.address.state}
+              </p>
+            </div>
+          </div>
+
+          {/* Delivery time */}
+
+          <div className="flex items-center gap-3">
+            <span className="bg-yellow p-2 rounded-full text-white shrink-0">
+              <TimerIcon size={16} weight="fill" />
+            </span>
+            <div>
+              <p className="text-text-m text-base-text">Estimated delivery</p>
+              <p className="text-text-m text-base-text font-bold">
+                20 min - 30 min
+              </p>
+            </div>
+          </div>
+
+          {/* Payment */}
+          <div className="flex items-center gap-3">
+            <span className="bg-yellow-dark p-2 rounded-full text-white shrink-0">
+              <CurrencyDollarIcon size={16} weight="fill" />
+            </span>
+            <div>
+              <p className="text-text-m text-base-text">Paymente on delivery</p>
+              <p className="text-text-m text-base-text font-bold">
+                {paymentLabels[order?.paymentMethod]}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Illustration */}
+        <div className="shrink-0">
+          <Image
+            src="/delivery.png"
+            alt="Delivery person in a scooter"
+            width={492}
+            height={293}
+            priority
+          />
         </div>
       </div>
     </main>

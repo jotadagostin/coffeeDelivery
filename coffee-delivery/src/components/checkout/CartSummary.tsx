@@ -4,14 +4,40 @@ import { useCartStore } from "@/store/useCartStore";
 import { TrashIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { AddressFormData } from "./AddressForm";
+
+type PaymentMethod = "credit" | "debit" | "cash";
+
+interface CartSummaryProps {
+  address: Partial<AddressFormData>;
+  paymentMethod: PaymentMethod;
+}
 
 const DELIVERY_FREE = 3.5;
 
-export function CartSummary() {
-  const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
+export function CartSummary({ address, paymentMethod }: CartSummaryProps) {
+  const { items, removeItem, updateQuantity, totalPrice, setOrder, clearCart } =
+    useCartStore();
   const router = useRouter();
 
   function handleConfirmOrder() {
+    if (items.length === 0) return;
+
+    setOrder({
+      items,
+      address: {
+        zip: address.zip || "",
+        street: address.street || "",
+        number: address.number || "",
+        complement: address.complement,
+        neighborhood: address.neighborhood || "",
+        city: address.city || "",
+        state: address.state || "",
+      },
+      paymentMethod,
+    });
+
+    clearCart();
     router.push("/success");
   }
   return (
