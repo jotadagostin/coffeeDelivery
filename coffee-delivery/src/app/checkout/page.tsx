@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 
 const addressSchema = z.object({
-  zip: z.string().min(8, "Invalid ZIP code"),
+  zip: z.string().min(4, "Invalid ZIP code"),
   street: z.string().min(1, "Street is required"),
   number: z.string().min(1, "Number is required"),
   complement: z.string().optional(),

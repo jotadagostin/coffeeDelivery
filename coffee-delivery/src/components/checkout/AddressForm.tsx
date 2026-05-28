@@ -30,17 +30,44 @@ export function AdressForm({ form }: AddressFormProps) {
   const zip = watch("zip");
 
   // Auto-fill address via ViaCep
+  // async function handleZipBlur() {
+  //   const cleanZip = zip?.replace(/\D/g, "");
+  //   if (cleanZip?.length === 0) {
+  //     const res = await fetch(`https://viacep.com.br/ws/${cleanZip}/json/`);
+  //     const data = await res.json();
+  //     if (!data.erro) {
+  //       setValue("street", data.logradouro);
+  //       setValue("neighborhood", data.bairro);
+  //       setValue("city", data.localidade);
+  //       setValue("state", data.uf);
+  //     }
+  //   }
+  // }
+
   async function handleZipBlur() {
-    const cleanZip = zip?.replace(/\D/g, "");
-    if (cleanZip?.length === 0) {
-      const res = await fetch(`https://viacep.com.br/ws/${cleanZip}/json/`);
-      const data = await res.json();
-      if (!data.erro) {
-        setValue("street", data.logradouro);
-        setValue("neighborhood", data.bairro);
-        setValue("city", data.localidade);
-        setValue("state", data.uf);
+    const cleanZip = zip?.trim();
+    if (!cleanZip || cleanZip.length < 4) return;
+
+    try {
+      // Tenta Itália primeiro, depois Brasil
+      const countries = ["it", "br", "us", "pt", "de", "fr", "es"];
+
+      for (const country of countries) {
+        const res = await fetch(
+          `https://api.zippopotam.us/${country}/${cleanZip}`,
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const place = data.places?.[0];
+          if (place) {
+            setValue("city", place["place name"]);
+            setValue("state", place["state abbreviation"] || place["state"]);
+            break;
+          }
+        }
       }
+    } catch {
+      // silently fail — user fills manually
     }
   }
 
