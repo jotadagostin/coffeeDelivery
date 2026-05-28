@@ -7,6 +7,7 @@ type PaymentMethod = "credit" | "debit" | "cash";
 
 interface PaymentSelectorProps {
   onChange?: (method: PaymentMethod) => void;
+  selected: PaymentMethod | null;
 }
 
 export function PaymentSelector({ onChange }: PaymentSelectorProps) {

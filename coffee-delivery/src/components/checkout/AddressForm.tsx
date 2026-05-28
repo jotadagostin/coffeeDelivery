@@ -1,9 +1,7 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { MapPinIcon } from "@phosphor-icons/react";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import z from "zod";
 
 const addressSchema = z.object({
@@ -18,52 +16,41 @@ const addressSchema = z.object({
 export type AddressFormData = z.infer<typeof addressSchema>;
 
 interface AddressFormProps {
-  onSubmit?: (data: AddressFormData) => void;
-  onChange?: (data: Partial<AddressFormData>) => void;
+  form: UseFormReturn<AddressFormData>;
 }
 
-export function AdressForm({ onChange }: AddressFormProps) {
+export function AdressForm({ form }: AddressFormProps) {
   const {
     register,
     watch,
+    setValue,
     formState: { errors },
-  } = useForm<AddressFormData>({
-    resolver: zodResolver(addressSchema),
-  });
+  } = form;
 
   const zip = watch("zip");
 
   // Auto-fill address via ViaCep
-  useEffect(() => {
+  async function handleZipBlur() {
     const cleanZip = zip?.replace(/\D/g, "");
-    if (cleanZip?.length === 8) {
-      fetch(`https://viacep.com.br/ws/${cleanZip}/json/`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (!data.erro) {
-            onChange?.({
-              street: data.logradouro,
-              neighborhood: data.bairro,
-              city: data.localidade,
-              state: data.uf,
-            });
-          }
-        });
+    if (cleanZip?.length === 0) {
+      const res = await fetch(`https://viacep.com.br/ws/${cleanZip}/json/`);
+      const data = await res.json();
+      if (!data.erro) {
+        setValue("street", data.logradouro);
+        setValue("neighborhood", data.bairro);
+        setValue("city", data.localidade);
+        setValue("state", data.uf);
+      }
     }
-  }, [zip, onChange]);
-
-  const watchedFields = watch();
-
-  useEffect(() => {
-    onChange?.(watchedFields);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(watchedFields)]);
+  }
 
   const inputClass = `
     w-full bg-base-input border border-base-button rounded-md px-3 py-3
     text-text-s text-base-text placeholder:text-base-label
     focus:outline-none focus:border-yellow-dark transition-colors
   `;
+
+  const errorClass = "text-tag text-red-500 mt-1 block";
 
   return (
     <div className="bg-base-card rounded-md p-10 flex flex-col gap-8">
@@ -84,22 +71,26 @@ export function AdressForm({ onChange }: AddressFormProps) {
         <div className="w-50">
           <input
             {...register("zip")}
+            onBlur={handleZipBlur}
             placeholder="ZIP code"
             className={inputClass}
           />
           {errors.zip && (
-            <span className="text-tag text-red-500 mt-1">
-              {errors.zip.message}
-            </span>
+            <span className={errorClass}>{errors.zip.message}</span>
           )}
         </div>
 
         {/* Street */}
-        <input
-          {...register("street")}
-          placeholder="Street"
-          className={inputClass}
-        />
+        <div>
+          <input
+            {...register("street")}
+            placeholder="Street"
+            className={inputClass}
+          />
+          {errors.street && (
+            <span className={errorClass}>{errors.street.message}</span>
+          )}
+        </div>
 
         {/* Number + Complement */}
         <div className="flex gap-3">
@@ -109,6 +100,9 @@ export function AdressForm({ onChange }: AddressFormProps) {
               placeholder="Number"
               className={inputClass}
             />
+            {errors.number && (
+              <span className={errorClass}>{errors.number.message}</span>
+            )}
           </div>
           <div className="flex-1 relative">
             <input
@@ -130,18 +124,29 @@ export function AdressForm({ onChange }: AddressFormProps) {
               placeholder="Neighborhood"
               className={inputClass}
             />
+            {errors.neighborhood && (
+              <span className={errorClass}>{errors.neighborhood.message}</span>
+            )}
           </div>
-          <input
-            {...register("city")}
-            placeholder="City"
-            className={`${inputClass} flex-1`}
-          />
+          <div className="flex-1">
+            <input
+              {...register("city")}
+              placeholder="City"
+              className={`${inputClass} flex-1`}
+            />
+            {errors.city && (
+              <span className={errorClass}>{errors.city.message}</span>
+            )}
+          </div>
           <div className="w-15">
             <input
               {...register("state")}
               placeholder="ST"
               className={inputClass}
             />
+            {errors.state && (
+              <span className={errorClass}>{errors.state.message}</span>
+            )}
           </div>
         </div>
       </div>

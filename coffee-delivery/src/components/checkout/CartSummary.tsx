@@ -3,43 +3,21 @@
 import { useCartStore } from "@/store/useCartStore";
 import { TrashIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { AddressFormData } from "./AddressForm";
-
-type PaymentMethod = "credit" | "debit" | "cash";
-
-interface CartSummaryProps {
-  address: Partial<AddressFormData>;
-  paymentMethod: PaymentMethod;
-}
+import { useEffect, useState } from "react";
 
 const DELIVERY_FREE = 3.5;
 
-export function CartSummary({ address, paymentMethod }: CartSummaryProps) {
-  const { items, removeItem, updateQuantity, totalPrice, setOrder, clearCart } =
-    useCartStore();
-  const router = useRouter();
+export function CartSummary() {
+  const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
+  const [mounted, setMounted] = useState(false);
 
-  function handleConfirmOrder() {
-    if (items.length === 0) return;
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
-    setOrder({
-      items,
-      address: {
-        zip: address.zip || "",
-        street: address.street || "",
-        number: address.number || "",
-        complement: address.complement,
-        neighborhood: address.neighborhood || "",
-        city: address.city || "",
-        state: address.state || "",
-      },
-      paymentMethod,
-    });
+  if (!mounted) return null;
 
-    clearCart();
-    router.push("/success");
-  }
   return (
     <div className="bg-base-card rounded-tl-md rounded-tr-3xl rounded-bl-3xl rounded-br-md p-10 flex flex-col gap-6">
       <h2 className="font-baloo font-bold text-title-s text-base-subtitle">
@@ -129,10 +107,7 @@ export function CartSummary({ address, paymentMethod }: CartSummaryProps) {
       </div>
 
       {/* Confirm button */}
-      <button
-        onClick={handleConfirmOrder}
-        className="w-full bg-yellow hover:bg-yellow-dark text-white font-bold text-button-g uppercase py-3 rounded-md transition-colors cursor-pointer"
-      >
+      <button className="w-full bg-yellow hover:bg-yellow-dark text-white font-bold text-button-g uppercase py-3 rounded-md transition-colors cursor-pointer">
         Confirm order
       </button>
     </div>
