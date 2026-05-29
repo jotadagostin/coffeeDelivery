@@ -18,6 +18,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Coffee Delivery",
   description: "Find the perfect coffee for any time of day",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
