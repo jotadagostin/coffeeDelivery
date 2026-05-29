@@ -11,21 +11,21 @@ import Image from "next/image";
 export function HeroSection() {
   return (
     <section className="bg-base-card">
-      <div className="max-w-[1160px] mx-auto px-8 py-24 flex items-center justify-between gap-14">
+      <div className="max-w-290 mx-auto px-4 md:px-8 py-12 md:py-24 flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-14">
         {/* Left content */}
-        <div className="flex flex-col gap-16 flex-1">
+        <div className="flex flex-col gap-10 md:gap-16 flex-1">
           <div className="flex flex-col gap-4">
-            <h1 className="font-baloo text-title-xl font-extrabold text-base-title leading-[130%]">
+            <h1 className="font-baloo text-title-s md:text-title-xl font-extrabold text-base-title leading-[130%]">
               Find the perfect coffee for any time of day
             </h1>
-            <p className="text-text-l text-base-subtitle">
+            <p className="text-text-m md:text-text-l text-base-subtitle">
               With Coffee Delivery you receive your coffee wherever you are, at
               any time
             </p>
           </div>
 
           {/* Features grid */}
-          <div className="grid grid-cols-2 gap-x-10 gap-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5">
             <div className="flex items-center gap-3">
               <span className="bg-yellow-dark p-2 rounded-full text-white">
                 <ShoppingCartIcon size={16} weight="fill" />
@@ -72,6 +72,7 @@ export function HeroSection() {
             width={476}
             height={360}
             priority
+            className="w-70 md:w-119"
           />
         </div>
       </div>

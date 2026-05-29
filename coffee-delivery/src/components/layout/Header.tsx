@@ -17,7 +17,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="max-w-290 mx-auto px-8 py-8 flex items-center justify-between">
+    <header className="max-w-290 mx-auto px-4 md:px-8 py-4 md:py-8 flex items-center justify-between">
       <Link href="/">
         <Image
           src="/logo.svg"

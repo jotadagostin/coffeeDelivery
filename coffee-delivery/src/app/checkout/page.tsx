@@ -52,17 +52,17 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="max-w-290 mx-auto px-8 py-10">
+    <main className="max-w-290 mx-auto px-4 md:px-8 py-10">
       <h1 className="font-baloo font-extrabold text-title-l text-base-subtitle mb-8">
         Complete your order
       </h1>
 
       <form
-        className="flex gap-8 items-start"
+        className="flex flex-col lg:flex-row gap-8 items-start"
         onSubmit={form.handleSubmit(handleConfirmOrder)}
       >
         {/* left col - forms */}
-        <div className="flex flex-col gap-3 flex-1">
+        <div className="flex flex-col gap-3 flex-1 w-full">
           <AdressForm form={form} />
           <PaymentSelector
             onChange={setPaymentMethod}
@@ -71,7 +71,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right col - Cart summary */}
-        <div className="w-md shrink-0">
+        <div className="w-full lg:w-md shrink-0">
           <CartSummary />
         </div>
       </form>

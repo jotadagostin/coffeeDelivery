@@ -95,7 +95,7 @@ export function AdressForm({ form }: AddressFormProps) {
       {/* Fields */}
       <div className="flex flex-col gap-4">
         {/* ZIP */}
-        <div className="w-50">
+        <div className="">
           <input
             {...register("zip")}
             onBlur={handleZipBlur}
@@ -120,8 +120,8 @@ export function AdressForm({ form }: AddressFormProps) {
         </div>
 
         {/* Number + Complement */}
-        <div className="flex gap-3">
-          <div className="w-50">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="w-full sm:w-50">
             <input
               {...register("number")}
               placeholder="Number"
@@ -144,8 +144,8 @@ export function AdressForm({ form }: AddressFormProps) {
         </div>
 
         {/* Neighborhood + City + State */}
-        <div className="flex gap-3">
-          <div className="w-50">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="">
             <input
               {...register("neighborhood")}
               placeholder="Neighborhood"
@@ -165,7 +165,7 @@ export function AdressForm({ form }: AddressFormProps) {
               <span className={errorClass}>{errors.city.message}</span>
             )}
           </div>
-          <div className="w-15">
+          <div className="w-full sm:w-15">
             <input
               {...register("state")}
               placeholder="ST"
